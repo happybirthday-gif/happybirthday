@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日驚喜</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.2; }
+        }
+
+        .instruction {
+            position: absolute;
+            top: 20%;
+            font-size: 24px;
+            color: #ffcc00;
+            text-align: center;
+        }
+
+        .gift {
+            width: 150px;
+            height: 200px;
+            background: #ff6f61;
+            border: 5px solid #d4af37;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .gift::before, .gift::after {
+            content: '';
+            position: absolute;
+            background: #88c057;
+        }
+
+        .gift::before {
+            width: 20px;
+            height: 100%;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+        }
+
+        .gift::after {
+            width: 100%;
+            height: 20px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .gift-lid {
+            width: 160px;
+            height: 40px;
+            background: #d4af37;
+            border-radius: 10px 10px 0 0;
+            position: absolute;
+            top: -40px;
+            left: -5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gift-lid::before {
+            content: '';
+            width: 40px;
+            height: 20px;
+            background: #88c057;
+            border-radius: 50%;
+            position: absolute;
+            top: -20px;
+        }
+
+        .cake-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .cake {
+            width: 200px;
+            height: 60px;
+            background: #ffcc99;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .cake::before, .cake::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            background: #ff9966;
+        }
+
+        .cake::before { top: 0; border-radius: 10px 10px 0 0; }
+        .cake::after { bottom: 0; }
+
+        .layer-2 { width: 150px; }
+        .layer-3 { width: 100px; }
+
+        .candles {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            top: -40px;
+        }
+
+        .candle {
+            width: 20px;
+            height: 40px;
+            background: transparent;
+            font-size: 40px;
+            font-weight: bold;
+            line-height: 40px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .candle.one { color: blue; }
+        .candle.five { color: red; }
+
+        .flame {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255,223,0,1) 0%, rgba(255,69,0,1) 70%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: flicker 0.2s infinite alternate;
+        }
+
+        @keyframes flicker {
+            from { transform: translateX(-50%) scale(1); }
+            to { transform: translateX(-50%) scale(1.1); }
+        }
+
+        .smoke {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(192,192,192,0.8) 0%, rgba(192,192,192,0) 70%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: rise 2s ease-out forwards;
+        }
+
+        @keyframes rise {
+            from { transform: translateX(-50%) translateY(0); opacity: 1; }
+            to { transform: translateX(-50%) translateY(-50px); opacity: 0; }
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #ffcc00;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: red;
+            opacity: 0;
+            animation: confetti 2s ease-out forwards;
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+        }
+
+        .wish-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .wish-container input {
+            margin: 5px 0;
+            padding: 5px;
+            width: 200px;
+        }
+
+        .wish-container button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #ffcc00;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #candle-instruction {
+            font-size: 28px;
+            color: #ff4500;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .fireworks {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 50px;
+            color: #ffcc00;
+            text-shadow: 2px 2px 8px rgba(255, 69, 0, 0.9);
+            display: none;
+        }
+
+        .firework-letter {
+            position: absolute;
+            font-size: 50px;
+            color: #ffcc00;
+            text-shadow: 2px 2px 8px rgba(255, 69, 0, 0.9);
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: translateY(0) scale(0); opacity: 0; }
+            100% { transform: translateY(-50px) scale(1); opacity: 1; }
+        }
+
+        .gif-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: none;
+        }
+
+        .gif-container img {
+            width: 200px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <audio id="bg-music" src="your-music-file.mp3"></audio>
+    <div class="stars"></div>
+    <div class="instruction" id="instruction">請點擊禮物 🎁</div>
+    <div class="gift" onclick="showCake()">
+        <div class="gift-lid"></div>
+    </div>
+    <div class="cake-container">
+        <div class="candles">
+            <div class="candle one" onclick="lightCandle(this)">1<div class="flame"></div></div>
+            <div class="candle five" onclick="lightCandle(this)">5<div class="flame"></div></div>
+        </div>
+        <div class="cake layer-3"></div>
+        <div class="cake layer-2"></div>
+        <div class="cake"></div>
+        <div class="message">陳奕銜 生日快樂</div>
+        <div class="instruction" id="candle-instruction">請點擊蠟燭點燃火焰</div>
+        <div class="wish-container" id="wish-container">
+            <input type="text" placeholder="願望 1">
+            <input type="text" placeholder="願望 2">
+            <input type="text" placeholder="願望 3">
+            <button onclick="submitWishes()">完成</button>
+        </div>
+    </div>
+    <div class="fireworks" id="fireworks"></div>
+    <div class="gif-container" id="gif-container">
+        <img src="videoplayback.gif" alt="gif">
+    </div>
+
+    <script>
+        const starsContainer = document.querySelector('.stars');
+        for (let i = 0; i < 207; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.animationDuration = `${Math.random() * 2 + 1}s`;
+            starsContainer.appendChild(star);
+        }
+
+        let candlesLit = 0;
+
+        function showCake() {
+            document.querySelector('.gift').style.display = 'none';
+            document.querySelector('.instruction').style.display = 'none';
+            document.querySelector('.cake-container').style.display = 'flex';
+            document.getElementById('bg-music').play();
+            document.getElementById('gif-container').style.display = 'block';
+            launchConfetti();
+        }
+
+        function lightCandle(candle) {
+            const flame = candle.querySelector('.flame');
+            if (flame.style.opacity === '0' || flame.style.opacity === '') {
+                flame.style.opacity = 1;
+                candlesLit++;
+            }
+            if (candlesLit === 2) {
+                document.getElementById('candle-instruction').style.display = 'none';
+                document.getElementById('wish-container').style.display = 'flex';
+            }
+        }
+
+        function submitWishes() {
+            const flames = document.querySelectorAll('.flame');
+            flames.forEach(flame => flame.style.opacity = 0);
+
+            const candles = document.querySelectorAll('.candle');
+            candles.forEach(candle => {
+                const smoke = document.createElement('div');
+                smoke.classList.add('smoke');
+                candle.appendChild(smoke);
+
+                setTimeout(() => {
+                    smoke.remove();
+                }, 2000);
+            });
+
+            document.getElementById('wish-container').style.display = 'none';
+            showFireworks();
+        }
+
+        function launchConfetti() {
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.left = `${Math.random() * window.innerWidth}px`;
+                confetti.style.top = `${Math.random() * 50}px`;
+                confetti.style.animationDelay = `${Math.random()}s`;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 2000);
+            }
+        }
+
+        function showFireworks() {
+            const message = "祝你心想事成";
+            const fireworks = document.getElementById('fireworks');
+            fireworks.innerHTML = '';
+
+            for (let i = 0; i < message.length; i++) {
+                const letter = document.createElement('div');
+                letter.classList.add('firework-letter');
+                letter.textContent = message[i];
+                letter.style.left = `${(i - message.length / 2) * 60}px`;
+                fireworks.appendChild(letter);
+            }
+
+            fireworks.style.display = 'block';
+
+            setTimeout(() => {
+                fireworks.style.display = 'none';
+            }, 10000);
+        }
+    </script>
+</body>
+</html>
