@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日驚喜</title>
+    <script>
+        window.onload = function() {
+            const input = prompt('請輸入驗證碼');
+            verifyCaptcha(input);
+        }
+
+        function verifyCaptcha(input) {
+            const correctCaptcha = 'chopi0207';
+
+            if (input === correctCaptcha) {
+                window.location.href = 'https://happybirthday-gif.github.io/happybirthday/%E7%94%9F%E6%97%A5%E9%A9%9A%E5%96%9C/%E7%94%9F%E6%97%A5%E9%A9%9A%E5%96%9C.html';
+            } else {
+                alert('驗證碼錯誤');
+                window.location.reload();
+            }
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
