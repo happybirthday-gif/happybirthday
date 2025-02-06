@@ -270,8 +270,17 @@
         }
 
         .gif-container img {
-            width: 200px;
+            width: 400px;
             height: auto;
+        }
+
+        /* 添加圖片 */
+        #love-image {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: none;
+            width: 400px; /* 設定圖片大小 */
         }
     </style>
 </head>
@@ -304,6 +313,9 @@
         <img src="videoplayback.gif" alt="gif">
     </div>
 
+    <!-- 加入圖片 -->
+    <img id="love-image" src="愛.jpg" alt="愛的圖片">
+
     <script>
         const starsContainer = document.querySelector('.stars');
         for (let i = 0; i < 207; i++) {
@@ -323,6 +335,10 @@
             document.querySelector('.cake-container').style.display = 'flex';
             document.getElementById('bg-music').play();
             document.getElementById('gif-container').style.display = 'block';
+            
+            // 顯示圖片
+            document.getElementById('love-image').style.display = 'block';
+
             launchConfetti();
         }
 
